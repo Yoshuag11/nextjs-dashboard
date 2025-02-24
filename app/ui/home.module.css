@@ -1,0 +1,10 @@
+.shape {
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 30px solid black;
+  height: 0;
+  width: 0;
+}
+.font-test {
+  font-family: var(--font-lusitana);
+}
