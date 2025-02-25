@@ -33,7 +33,7 @@ export async function fetchRevenue() {
 export async function fetchLatestInvoices() {
   try {
     await new Promise((resolve) => {
-      setTimeout(resolve, 4000);
+      setTimeout(resolve, 10000);
     });
 
     const data = await sql<LatestInvoiceRaw[]>`
@@ -57,7 +57,7 @@ export async function fetchLatestInvoices() {
 export async function fetchCardData() {
   try {
     await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
+      setTimeout(resolve, 15000);
     });
 
     // You can probably combine these into a single SQL query
