@@ -15,9 +15,7 @@ export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
-
-    console.log("Fetching revenue data...");
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const data = await sql<Revenue[]>`SELECT * FROM revenue`;
 
@@ -33,7 +31,7 @@ export async function fetchRevenue() {
 export async function fetchLatestInvoices() {
   try {
     await new Promise((resolve) => {
-      setTimeout(resolve, 10000);
+      setTimeout(resolve, 3000);
     });
 
     const data = await sql<LatestInvoiceRaw[]>`
@@ -57,7 +55,7 @@ export async function fetchLatestInvoices() {
 export async function fetchCardData() {
   try {
     await new Promise((resolve) => {
-      setTimeout(resolve, 15000);
+      setTimeout(resolve, 5000);
     });
 
     // You can probably combine these into a single SQL query
@@ -161,14 +159,12 @@ export async function fetchInvoiceById(id: string) {
       FROM invoices
       WHERE invoices.id = ${id};
     `;
-
     const invoice = data.map((invoice) => ({
       ...invoice,
       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
     }));
-
-    return invoice[0];
+    return invoice[0] as (typeof invoice)[0] | undefined;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch invoice.");

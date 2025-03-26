@@ -1,17 +1,31 @@
-import { CustomerField } from '@/app/lib/definitions';
-import Link from 'next/link';
+"use client";
+import { useActionState } from "react";
+import { CustomerField } from "@/app/lib/definitions";
+import Link from "next/link";
 import {
   CheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
   UserCircleIcon,
-} from '@heroicons/react/24/outline';
-import { Button } from '@/app/ui/button';
-
-export default function Form({ customers }: { customers: CustomerField[] }) {
+} from "@heroicons/react/24/outline";
+import { Button } from "@/app/ui/button";
+import { FormError } from "@/app/ui/invoices/form-error";
+import { createInvoice } from "@/app/lib/action";
+import type { StateInterface } from "@/app/lib/action";
+export default function CreateForm({
+  customers,
+}: {
+  customers: CustomerField[];
+}) {
+  const initialState: StateInterface = {};
+  const [state, formAction] = useActionState(createInvoice, initialState);
+  const { errors, message } = state;
   return (
-    <form>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+    <form action={formAction}>
+      <div
+        aria-describedby="form-error"
+        className="rounded-md bg-gray-50 p-4 md:p-6"
+      >
         {/* Customer Name */}
         <div className="mb-4">
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
@@ -19,6 +33,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           </label>
           <div className="relative">
             <select
+              aria-describedby="customer-error"
               id="customer"
               name="customerId"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
@@ -35,8 +50,8 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
+          <FormError errors={errors?.customerId} id="customer-error" />
         </div>
-
         {/* Invoice Amount */}
         <div className="mb-4">
           <label htmlFor="amount" className="mb-2 block text-sm font-medium">
@@ -45,6 +60,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
+                aria-describedby="amount-error"
                 id="amount"
                 name="amount"
                 type="number"
@@ -55,8 +71,8 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          <FormError errors={errors?.amount} id="amount-error" />
         </div>
-
         {/* Invoice Status */}
         <fieldset>
           <legend className="mb-2 block text-sm font-medium">
@@ -66,6 +82,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
+                  aria-describedby="status-error"
                   id="pending"
                   name="status"
                   type="radio"
@@ -81,6 +98,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               </div>
               <div className="flex items-center">
                 <input
+                  aria-describedby="status-error"
                   id="paid"
                   name="status"
                   type="radio"
@@ -96,7 +114,9 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               </div>
             </div>
           </div>
+          <FormError errors={errors?.status} id="status-error" />
         </fieldset>
+        <FormError errors={message} id="form-error" />
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
