@@ -3,6 +3,10 @@ import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import EditForm from "@/app/ui/invoices/edit-form";
 import { fetchCustomers, fetchInvoiceById } from "@/app/lib/data";
 import type { Breadcrumb } from "@/app/ui/invoices/breadcrumbs";
+
+export const metadata = {
+  title: "Edit Invoice",
+};
 export default async function EditInvoice(props: {
   params: Promise<{ id: string }>;
 }) {

@@ -2,6 +2,10 @@ import BreadCrumbs from "@/app/ui/invoices/breadcrumbs";
 import CreateForm from "@/app/ui/invoices/create-form";
 import { fetchCustomers } from "@/app/lib/data";
 import type { Breadcrumb as BreadcrumbInterface } from "@/app/ui/invoices/breadcrumbs";
+
+export const metadata = {
+  title: "Create Invoice",
+};
 export default async function CreateInvoicePage() {
   const customers = await fetchCustomers();
   const breadcrumbs: BreadcrumbInterface[] = [
